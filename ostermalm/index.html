@@ -174,6 +174,13 @@ body{margin:0;background:var(--ink);color:var(--chalk);overflow:hidden;
 .cta{display:flex;flex-direction:column;gap:8px;padding:28px 32px;border-radius:12px;background:var(--volt);color:var(--white)}
 .cta b{font:900 var(--h3)/.95 var(--display);text-transform:uppercase}
 .cta span{font:600 32px/1.3 var(--body);color:rgba(255,255,255,.88)}
+/* ruta med QR till höger */
+.cta.has-qr{flex-direction:row;align-items:center;justify-content:space-between;gap:28px}
+.cta .cta-txt{display:flex;flex-direction:column;gap:8px;min-width:0}
+.cta .cta-qr{display:flex;flex-direction:column;align-items:center;gap:8px;flex:none}
+.cta .cta-qr i{display:block;width:120px;height:120px;background:#fff;padding:8px;border-radius:8px;box-sizing:border-box}
+.cta .cta-qr i svg{display:block;width:100%;height:100%}
+.cta .cta-qr small{font:700 20px/1 var(--label);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.88)}
 
 /* företagsträning */
 .points{display:flex;flex-direction:column;gap:18px;margin:0;padding:0;list-style:none}
@@ -244,8 +251,10 @@ const DAYS_LONG = ["söndag","måndag","tisdag","onsdag","torsdag","fredag","lö
 const STUDIO = { addr:"Skeppargatan 28", open:"06–22" };
 
 const PRICES = [
-  {name:"Level 2", text:"Gym när du vill, egen nyckelbricka", price:"799"},
-  {name:"Level 3", text:"Alla klasser + gymmet", price:"1 199"},
+  {name:"Level 1", text:"Träna med PT", price:"799"},
+  {name:"Level 2", text:"Gym när du vill, egen nyckelbricka", price:"999"},
+  {name:"Level 3", text:"Alla klasser + gymmet", price:"1 599"},
+  {name:"VIP", text:"Gym, klasser, kläder och eget skåp", price:"2 499"},
   {name:"Baby Bootcamp", text:"3 pass i veckan, bebisen följer med", price:"1 999"}
 ];
 
@@ -259,8 +268,8 @@ const CLASSES = [
 const ALL_CLASSES = [
   {name:"Burn", text:"Kondition och styrka med pulsen uppe", tag:"Kondition"},
   {name:"Pump", text:"Ren styrka i liten grupp med PT", tag:"Styrka"},
-  {name:"Discopump", text:"Pump med discoljus och hög musik", tag:"Styrka"},
-  {name:"X-Press", text:"Styrka och kondition på 30 minuter", tag:"Kondition"},
+  {name:"Discopump", text:"Styrketräning i grupp på gymmet", tag:"Styrka"},
+  {name:"X-Press", text:"Styrka och kondition på 30 eller 45 minuter", tag:"Kondition"},
   {name:"Hyprox", text:"Inspirerat av HYROX, hybrid och kondition", tag:"Hybrid"},
   {name:"Mobilitet", text:"Rörlighet och återhämtning för hela kroppen", tag:"Rörlighet"},
   {name:"Baby Bootcamp", text:"Träna med bebisen bredvid dig", tag:"Föräldrar"}
@@ -327,16 +336,16 @@ function buildSlides(){
     <div class="eyebrow">Gruppträning</div>
     <h2 class="big">Våra klasser</h2>
     <div class="passes compact">${ALL_CLASSES.map(c=>`<div class="plan"><div class="n"><b>${esc(c.name)}</b><span class="d">${esc(c.text)}</span></div><span class="tag">${esc(c.tag)}</span></div>`).join("")}</div>`});
-  s.push({dur:8000,html:`
+  s.push({bg:"ptbg",dur:8000,html:`
     <div class="eyebrow">Boka PT</div>
-    <h2 class="big">Träna med Julia</h2>
+    <h2 class="big">Träna med personlig tränare</h2>
     <p class="lead" style="font-size:42px;max-width:26ch">Ett upplägg byggt efter dina mål, i studion eller online.</p>
-    <div class="cta"><b>Prata med Julia</b><span>Fråga i studion eller boka på hyprsthlm.se</span></div>`});
+    <div class="cta has-qr"><div class="cta-txt"><b>Prata med Julia</b><span>I studion eller på julia@hyprsthlm.se</span></div><div class="cta-qr"><small>Följ Julia</small><i><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" class="segno"><path class="qrline" stroke="#1e1236" d="M0 0.5h7m4 0h1m2 0h1m1 0h3m3 0h7m-29 1h1m5 0h1m1 0h1m1 0h2m1 0h2m1 0h3m3 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m1 0h3m3 0h1m4 0h2m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m1 0h1m1 0h3m1 0h4m1 0h2m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m4 0h1m4 0h4m2 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m2 0h1m2 0h1m3 0h2m2 0h1m1 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-21 1h1m1 0h1m1 0h1m3 0h1m3 0h1m-21 1h1m5 0h1m1 0h3m4 0h1m1 0h1m1 0h1m1 0h2m2 0h3m-24 1h2m3 0h3m1 0h3m1 0h3m3 0h2m1 0h2m-28 1h1m2 0h1m1 0h4m1 0h1m1 0h4m4 0h3m-23 1h1m1 0h3m2 0h1m2 0h2m1 0h1m1 0h2m4 0h1m1 0h1m1 0h1m-26 1h1m3 0h3m1 0h1m4 0h1m2 0h1m1 0h3m1 0h2m4 0h1m-29 1h1m1 0h1m4 0h2m3 0h1m2 0h6m1 0h1m1 0h1m2 0h2m-25 1h1m1 0h1m2 0h2m4 0h3m4 0h2m1 0h2m-27 1h4m1 0h1m3 0h1m6 0h1m2 0h2m2 0h2m1 0h1m1 0h1m-26 1h2m1 0h1m2 0h1m1 0h2m2 0h1m1 0h1m2 0h1m2 0h1m1 0h2m-27 1h2m1 0h2m3 0h1m1 0h2m1 0h12m1 0h3m-29 1h2m1 0h2m1 0h1m2 0h1m2 0h1m2 0h2m1 0h2m1 0h2m2 0h1m2 0h1m-29 1h1m1 0h1m2 0h1m4 0h4m2 0h1m1 0h7m-25 1h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h2m1 0h2m1 0h1m2 0h5m1 0h3m-21 1h3m3 0h2m4 0h1m3 0h2m-26 1h7m4 0h1m3 0h2m2 0h2m1 0h1m1 0h3m-27 1h1m5 0h1m2 0h4m1 0h1m4 0h2m3 0h1m2 0h1m-28 1h1m1 0h3m1 0h1m4 0h6m2 0h7m2 0h1m-29 1h1m1 0h3m1 0h1m4 0h1m2 0h6m1 0h1m1 0h1m1 0h2m1 0h1m-29 1h1m1 0h3m1 0h1m5 0h1m2 0h2m5 0h6m-28 1h1m5 0h1m2 0h2m1 0h2m2 0h1m1 0h1m2 0h3m1 0h2m1 0h1m-29 1h7m1 0h1m3 0h2m3 0h1m1 0h1m1 0h1m1 0h4"/></svg></i></div></div>`});
   s.push({dur:9000,html:`
     <div class="eyebrow">Välj din nivå</div>
     <h2 class="big">Våra medlemskap</h2>
     <div class="passes">${PRICES.map(p=>`<div class="plan${p.hi?" hi":""}"><div class="n">${p.flag?`<span class="tag">${esc(p.flag)}</span>`:""}<b>${esc(p.name)}</b><span class="d">${esc(p.text)}</span></div><div class="pr">${esc(p.price)}<small>kr/mån</small></div></div>`).join("")}</div>
-    <p class="lead mute" style="font-size:32px;max-width:none">Level 2 och 3 har 12 månaders bindningstid.</p>`});
+    <p class="lead mute" style="font-size:32px;max-width:none">Level 2, Level 3 och VIP har 12 månaders bindningstid.</p>`});
   s.push({dur:7000,html:`
     <div class="eyebrow">Träna med kollegorna</div>
     <h2 class="big">Företagsträning</h2>
@@ -345,7 +354,7 @@ function buildSlides(){
       <li>Egen PT för gruppen</li>
       <li>Upplägg efter er nivå och era mål</li>
     </ul>
-    <div class="cta"><b>Boka företagsträning</b><span>Hör av er på maria@hyprsthlm.se</span></div>`});
+    <div class="cta"><b>Boka företagsträning</b><span>Hör av er på julia@hyprsthlm.se</span></div>`});
   return s;
 }
 function classSlide(c){
