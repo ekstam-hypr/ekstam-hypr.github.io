@@ -161,6 +161,8 @@ body{margin:0;background:var(--ink);color:var(--chalk);overflow:hidden;
 .slide.hero-slide{justify-content:flex-end;padding-bottom:60px;color:var(--white)}
 .hero-slide .eyebrow{color:rgba(255,255,255,.88)}
 .hero-slide .lead{color:var(--white)}
+.hero-slide .studio-line{white-space:nowrap}
+.addr{font:400 36px/1.2 var(--body);letter-spacing:.04em;margin:0;color:rgba(255,255,255,.85)}
 
 /* PT med Maria */
 .coach{display:grid;grid-template-columns:420px 1fr;gap:44px;align-items:end}
@@ -317,7 +319,8 @@ function buildSlides(){
   const s=[];
   s.push({bg:"hero",dur:8000,html:`
     <h2 class="mega" data-fit>Välkommen</h2>
-    <p class="lead" style="max-width:none">till HYPR Östermalm – ${esc(STUDIO.addr)}</p>`});
+    <h2 class="mega studio-line" data-fit data-max="63">till HYPR Östermalm</h2>
+    <p class="addr">${esc(STUDIO.addr)}</p>`});
   s.push(scheduleSlide());
   s.push({dur:11000,html:`
     <div class="eyebrow">Gruppträning</div>
