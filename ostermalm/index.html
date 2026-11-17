@@ -112,7 +112,7 @@ body{margin:0;background:var(--ink);color:var(--chalk);overflow:hidden;
 .sched .pass{grid-template-columns:140px 1fr auto;gap:22px;padding:16px 26px}
 .sched .pass .t{font-size:48px}
 .sched .pass .t small{font-size:18px;margin-top:4px}
-.sched .pass .n b{font-size:var(--h3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sched .pass .n b{font-size:var(--h3);white-space:nowrap}
 .sched .pass .n span{font-size:26px;margin-top:6px}
 .sched .tag{font-size:22px;padding:9px 12px 7px}
 .sched .tags{display:flex;gap:10px;align-items:center}
@@ -182,7 +182,8 @@ body{margin:0;background:var(--ink);color:var(--chalk);overflow:hidden;
 .points li::before{content:"";flex:none;width:52px;height:26px;background:var(--volt);-webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2036%2018%22%3E%3Crect%20x%3D%220%22%20y%3D%225%22%20width%3D%223%22%20height%3D%228%22%20rx%3D%221%22/%3E%3Crect%20x%3D%223%22%20y%3D%221%22%20width%3D%225%22%20height%3D%2216%22%20rx%3D%221.5%22/%3E%3Crect%20x%3D%228%22%20y%3D%223.5%22%20width%3D%223%22%20height%3D%2211%22%20rx%3D%221%22/%3E%3Crect%20x%3D%2211%22%20y%3D%227.2%22%20width%3D%2214%22%20height%3D%223.6%22%20rx%3D%221%22/%3E%3Crect%20x%3D%2225%22%20y%3D%223.5%22%20width%3D%223%22%20height%3D%2211%22%20rx%3D%221%22/%3E%3Crect%20x%3D%2228%22%20y%3D%221%22%20width%3D%225%22%20height%3D%2216%22%20rx%3D%221.5%22/%3E%3Crect%20x%3D%2233%22%20y%3D%225%22%20width%3D%223%22%20height%3D%228%22%20rx%3D%221%22/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2036%2018%22%3E%3Crect%20x%3D%220%22%20y%3D%225%22%20width%3D%223%22%20height%3D%228%22%20rx%3D%221%22/%3E%3Crect%20x%3D%223%22%20y%3D%221%22%20width%3D%225%22%20height%3D%2216%22%20rx%3D%221.5%22/%3E%3Crect%20x%3D%228%22%20y%3D%223.5%22%20width%3D%223%22%20height%3D%2211%22%20rx%3D%221%22/%3E%3Crect%20x%3D%2211%22%20y%3D%227.2%22%20width%3D%2214%22%20height%3D%223.6%22%20rx%3D%221%22/%3E%3Crect%20x%3D%2225%22%20y%3D%223.5%22%20width%3D%223%22%20height%3D%2211%22%20rx%3D%221%22/%3E%3Crect%20x%3D%2228%22%20y%3D%221%22%20width%3D%225%22%20height%3D%2216%22%20rx%3D%221.5%22/%3E%3Crect%20x%3D%2233%22%20y%3D%225%22%20width%3D%223%22%20height%3D%228%22%20rx%3D%221%22/%3E%3C/svg%3E") center/contain no-repeat}
 
 /* förlopp */
-.dots{position:absolute;left:80px;right:80px;bottom:300px;display:flex;gap:10px;z-index:3}
+.dots{position:absolute;left:80px;right:80px;bottom:278px;padding-block:22px;display:flex;align-items:center;gap:10px;z-index:5;cursor:pointer}
+.dots .dot:hover{opacity:.7}
 .dot{flex:1;height:8px;border-radius:4px;background:var(--line);overflow:hidden}
 .dot i{display:block;height:100%;width:0;background:var(--chalk)}
 .dot.done i{width:100%}
@@ -378,7 +379,7 @@ function tick(){const n=new Date();
   document.getElementById("dm").textContent=n.getDate()+"/"+(n.getMonth()+1);}
 
 /* --- loopen: bygg om varje varv så schema och Pump-fokus följer klockan --- */
-let slides=[], els=[], idx=-1;
+let slides=[], els=[], idx=-1, timer=null;
 const box=document.getElementById("slides"), dots=document.getElementById("dots"), sweep=document.getElementById("sweep");
 function render(){
   slides=buildSlides();
@@ -396,8 +397,11 @@ function next(){
     if(i===idx){const bar=d.firstElementChild;bar.style.animation="none";void bar.offsetWidth;bar.style.animation="";}});
   els[idx].querySelectorAll("[data-fit]").forEach(fitText);
   sweep.classList.remove("go"); void sweep.offsetWidth; sweep.classList.add("go");
-  setTimeout(next,slides[idx].dur);
+  clearTimeout(timer); timer=setTimeout(next,slides[idx].dur);
 }
+/* klicka på en stapel för att hoppa till den bilden */
+function goTo(i){ if(i===idx) return; idx=i-1; if(idx<0) idx=slides.length-1; next(); }
+dots.addEventListener("click",e=>{const r=dots.getBoundingClientRect(),n=dots.children.length;if(!n)return;goTo(Math.max(0,Math.min(n-1,Math.floor((e.clientX-r.left)/r.width*n))));});
 
 /* --- QR --- */
 document.getElementById("qrMedlem").innerHTML=QR.medlem;

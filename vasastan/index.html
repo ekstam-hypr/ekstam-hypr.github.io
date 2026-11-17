@@ -112,7 +112,7 @@ body{margin:0;background:var(--ink);color:var(--chalk);overflow:hidden;
 .sched .pass{grid-template-columns:140px 1fr auto;gap:22px;padding:16px 26px}
 .sched .pass .t{font-size:48px}
 .sched .pass .t small{font-size:18px;margin-top:4px}
-.sched .pass .n b{font-size:var(--h3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sched .pass .n b{font-size:var(--h3);white-space:nowrap}
 .sched .pass .n span{font-size:26px;margin-top:6px}
 .sched .tag{font-size:22px;padding:9px 12px 7px}
 .sched .tags{display:flex;gap:10px;align-items:center}
@@ -174,6 +174,13 @@ body{margin:0;background:var(--ink);color:var(--chalk);overflow:hidden;
 .cta{display:flex;flex-direction:column;gap:8px;padding:28px 32px;border-radius:12px;background:var(--volt);color:var(--white)}
 .cta b{font:900 var(--h3)/.95 var(--display);text-transform:uppercase}
 .cta span{font:600 32px/1.3 var(--body);color:rgba(255,255,255,.88)}
+/* ruta med QR till höger */
+.cta.has-qr{flex-direction:row;align-items:center;justify-content:space-between;gap:28px}
+.cta .cta-txt{display:flex;flex-direction:column;gap:8px;min-width:0}
+.cta .cta-qr{display:flex;flex-direction:column;align-items:center;gap:8px;flex:none}
+.cta .cta-qr i{display:block;width:120px;height:120px;background:#fff;padding:8px;border-radius:8px;box-sizing:border-box}
+.cta .cta-qr i svg{display:block;width:100%;height:100%}
+.cta .cta-qr small{font:700 20px/1 var(--label);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.88)}
 
 /* företagsträning */
 .points{display:flex;flex-direction:column;gap:18px;margin:0;padding:0;list-style:none}
@@ -182,7 +189,8 @@ body{margin:0;background:var(--ink);color:var(--chalk);overflow:hidden;
 .points li::before{content:"";flex:none;width:52px;height:26px;background:var(--volt);-webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2036%2018%22%3E%3Crect%20x%3D%220%22%20y%3D%225%22%20width%3D%223%22%20height%3D%228%22%20rx%3D%221%22/%3E%3Crect%20x%3D%223%22%20y%3D%221%22%20width%3D%225%22%20height%3D%2216%22%20rx%3D%221.5%22/%3E%3Crect%20x%3D%228%22%20y%3D%223.5%22%20width%3D%223%22%20height%3D%2211%22%20rx%3D%221%22/%3E%3Crect%20x%3D%2211%22%20y%3D%227.2%22%20width%3D%2214%22%20height%3D%223.6%22%20rx%3D%221%22/%3E%3Crect%20x%3D%2225%22%20y%3D%223.5%22%20width%3D%223%22%20height%3D%2211%22%20rx%3D%221%22/%3E%3Crect%20x%3D%2228%22%20y%3D%221%22%20width%3D%225%22%20height%3D%2216%22%20rx%3D%221.5%22/%3E%3Crect%20x%3D%2233%22%20y%3D%225%22%20width%3D%223%22%20height%3D%228%22%20rx%3D%221%22/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2036%2018%22%3E%3Crect%20x%3D%220%22%20y%3D%225%22%20width%3D%223%22%20height%3D%228%22%20rx%3D%221%22/%3E%3Crect%20x%3D%223%22%20y%3D%221%22%20width%3D%225%22%20height%3D%2216%22%20rx%3D%221.5%22/%3E%3Crect%20x%3D%228%22%20y%3D%223.5%22%20width%3D%223%22%20height%3D%2211%22%20rx%3D%221%22/%3E%3Crect%20x%3D%2211%22%20y%3D%227.2%22%20width%3D%2214%22%20height%3D%223.6%22%20rx%3D%221%22/%3E%3Crect%20x%3D%2225%22%20y%3D%223.5%22%20width%3D%223%22%20height%3D%2211%22%20rx%3D%221%22/%3E%3Crect%20x%3D%2228%22%20y%3D%221%22%20width%3D%225%22%20height%3D%2216%22%20rx%3D%221.5%22/%3E%3Crect%20x%3D%2233%22%20y%3D%225%22%20width%3D%223%22%20height%3D%228%22%20rx%3D%221%22/%3E%3C/svg%3E") center/contain no-repeat}
 
 /* förlopp */
-.dots{position:absolute;left:80px;right:80px;bottom:300px;display:flex;gap:10px;z-index:3}
+.dots{position:absolute;left:80px;right:80px;bottom:278px;padding-block:22px;display:flex;align-items:center;gap:10px;z-index:5;cursor:pointer}
+.dots .dot:hover{opacity:.7}
 .dot{flex:1;height:8px;border-radius:4px;background:var(--line);overflow:hidden}
 .dot i{display:block;height:100%;width:0;background:var(--chalk)}
 .dot.done i{width:100%}
@@ -333,7 +341,7 @@ function buildSlides(){
     <div class="eyebrow">Boka PT</div>
     <h2 class="big">Träna med Maria</h2>
     <p class="lead" style="font-size:42px;max-width:26ch">Ett upplägg byggt efter dina mål, i studion eller online.</p>
-    <div class="cta"><b>Prata med Maria</b><span>I studion eller på maria@hyprsthlm.se</span></div>`});
+    <div class="cta has-qr"><div class="cta-txt"><b>Prata med Maria</b><span>I studion eller på maria@hyprsthlm.se</span></div><div class="cta-qr"><small>Följ Maria</small><i><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" class="segno"><path class="qrline" stroke="#1e1236" d="M0 0.5h7m3 0h3m1 0h2m2 0h2m2 0h7m-29 1h1m5 0h1m3 0h1m1 0h5m5 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m2 0h3m2 0h4m1 0h2m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m3 0h3m1 0h3m1 0h1m3 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m2 0h1m2 0h2m1 0h4m1 0h1m1 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m1 0h3m1 0h1m1 0h6m2 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-18 1h1m2 0h2m1 0h2m1 0h1m-21 1h1m2 0h1m1 0h2m1 0h1m3 0h2m2 0h1m2 0h1m1 0h1m1 0h1m-24 1h1m2 0h3m2 0h3m5 0h1m3 0h3m2 0h1m2 0h1m-27 1h1m3 0h2m1 0h3m7 0h1m2 0h1m2 0h3m-28 1h1m1 0h1m1 0h2m1 0h1m1 0h1m1 0h3m4 0h3m2 0h2m1 0h2m-28 1h2m1 0h6m3 0h1m1 0h1m1 0h3m1 0h3m2 0h1m1 0h2m-29 1h2m6 0h1m1 0h1m8 0h3m1 0h1m-23 1h3m1 0h5m1 0h1m9 0h1m3 0h4m-28 1h2m2 0h1m1 0h1m1 0h5m2 0h3m2 0h2m2 0h1m1 0h1m-28 1h2m4 0h4m1 0h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h1m3 0h1m-26 1h2m3 0h1m1 0h4m1 0h1m1 0h2m4 0h2m1 0h1m2 0h1m-29 1h1m1 0h8m1 0h1m1 0h1m2 0h1m5 0h2m3 0h2m-27 1h1m1 0h2m1 0h1m2 0h4m3 0h4m6 0h2m-29 1h1m1 0h1m1 0h4m2 0h2m2 0h3m3 0h5m1 0h1m-19 1h1m1 0h2m1 0h1m3 0h1m1 0h2m3 0h1m1 0h3m-29 1h7m5 0h3m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m2 0h1m-28 1h1m5 0h1m1 0h3m1 0h2m1 0h1m2 0h1m1 0h1m3 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m2 0h1m2 0h1m1 0h1m1 0h2m2 0h5m2 0h2m-29 1h1m1 0h3m1 0h1m1 0h1m1 0h2m1 0h2m2 0h3m2 0h1m1 0h4m-28 1h1m1 0h3m1 0h1m6 0h2m3 0h1m2 0h1m2 0h3m1 0h1m-29 1h1m5 0h1m3 0h6m1 0h1m1 0h2m3 0h1m2 0h1m-28 1h7m1 0h3m1 0h1m1 0h2m1 0h1m2 0h1m2 0h2m2 0h1"/></svg></i></div></div>`});
   s.push({dur:9000,html:`
     <div class="eyebrow">Välj din nivå</div>
     <h2 class="big">Våra medlemskap</h2>
@@ -381,7 +389,7 @@ function tick(){const n=new Date();
   document.getElementById("dm").textContent=n.getDate()+"/"+(n.getMonth()+1);}
 
 /* --- loopen: bygg om varje varv så schema och Pump-fokus följer klockan --- */
-let slides=[], els=[], idx=-1;
+let slides=[], els=[], idx=-1, timer=null;
 const box=document.getElementById("slides"), dots=document.getElementById("dots"), sweep=document.getElementById("sweep");
 function render(){
   slides=buildSlides();
@@ -399,8 +407,11 @@ function next(){
     if(i===idx){const bar=d.firstElementChild;bar.style.animation="none";void bar.offsetWidth;bar.style.animation="";}});
   els[idx].querySelectorAll("[data-fit]").forEach(fitText);
   sweep.classList.remove("go"); void sweep.offsetWidth; sweep.classList.add("go");
-  setTimeout(next,slides[idx].dur);
+  clearTimeout(timer); timer=setTimeout(next,slides[idx].dur);
 }
+/* klicka på en stapel för att hoppa till den bilden */
+function goTo(i){ if(i===idx) return; idx=i-1; if(idx<0) idx=slides.length-1; next(); }
+dots.addEventListener("click",e=>{const r=dots.getBoundingClientRect(),n=dots.children.length;if(!n)return;goTo(Math.max(0,Math.min(n-1,Math.floor((e.clientX-r.left)/r.width*n))));});
 
 /* --- QR --- */
 document.getElementById("qrMedlem").innerHTML=QR.medlem;
