@@ -207,6 +207,22 @@ body{margin:0;background:var(--ink);color:var(--chalk);overflow:hidden;
 .cap b{display:block;white-space:nowrap;font:900 42px/.92 var(--display);text-transform:uppercase;color:#fff}
 .cap span{display:block;margin-top:8px;font:700 22px/1.2 var(--label);letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.82)}
 
+/* HYROX-resultat */
+.hx-bg{background:#16121f}
+.hx-bg img{object-position:center 22%}
+.hx-bg::before{content:"";position:absolute;top:0;right:0;bottom:0;left:0;background:#6f61aa;mix-blend-mode:color;opacity:.6;z-index:1;pointer-events:none}
+.hx-bg .shade{z-index:2;background:linear-gradient(180deg,rgba(30,18,54,.55),rgba(30,18,54,.12) 20%,rgba(30,18,54,.35) 42%,rgba(30,18,54,.92) 72%)}
+.hx-logo{display:block;width:300px;height:auto;margin-bottom:6px}
+.hx-time{font:900 250px/.8 var(--display);color:#ffe600;font-variant-numeric:tabular-nums;letter-spacing:-.01em;margin:0}
+.hx-chips{display:flex;flex-wrap:wrap;gap:14px}
+.hx-chips span{font:700 32px/1 var(--label);letter-spacing:.14em;text-transform:uppercase;padding:14px 20px 12px;border:3px solid rgba(255,255,255,.85);border-radius:4px;color:#fff}
+.hx-chips span.pb{background:#ffe600;border-color:#ffe600;color:#16121f}
+.hx-stats{display:grid;grid-template-columns:repeat(5,auto);justify-content:space-between;column-gap:20px;border-top:2px solid rgba(255,255,255,.3);padding-top:24px}
+.hx-stats div{display:flex;flex-direction:column;gap:8px}
+.hx-stats small{font:700 19px/1 var(--label);white-space:nowrap;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.75)}
+.hx-stats b{font:800 54px/.9 var(--display);font-variant-numeric:tabular-nums;color:#fff}
+.hx-stats b i{font:700 19px/1 var(--label);font-style:normal;letter-spacing:.1em;color:rgba(255,255,255,.75);margin-left:3px}
+
 [hidden]{display:none!important}
 @media (prefers-reduced-motion:reduce){
   .slide,.slide.on>*{transition:none;animation:none}
@@ -219,6 +235,7 @@ body{margin:0;background:var(--ink);color:var(--chalk);overflow:hidden;
   <div class="stage">
     <div class="hero" id="hero"><video id="heroVid" muted loop playsinline autoplay preload="auto"></video><div class="shade"></div></div>
     <div class="hero photo-bg" id="ptbg"><img id="ptImg" alt=""><div class="shade"></div></div>
+    <div class="hero photo-bg hx-bg" id="hyroxbg"><img src="https://hyrox.com/wp-content/uploads/2022/06/Two-Women-running-at-the-HYROX-race.jpg" alt="" onerror="this.remove()"><div class="shade"></div></div>
     <div class="sweep" id="sweep"></div>
 
     <div class="top">
@@ -326,12 +343,21 @@ function scheduleSlide(){
   return {dur:two?13000:11000,html:`<div class="secs${two?" two":""}">${html}</div>${foot}`};
 }
 
+const HYROX_UNTIL = new Date(2026,11,5); /* 5 dec 2026 */
 function buildSlides(){
   const s=[];
   s.push({bg:"hero",dur:8000,html:`
     <h2 class="mega" data-fit>Välkommen</h2>
     <h2 class="mega studio-line" data-fit data-max="63">till HYPR Vasastan</h2>
     <p class="addr">${esc(STUDIO.addr)}</p>`});
+  /* Julias HYROX Poznań 20/11. Visas t.o.m. HYROX_UNTIL. */
+  if(new Date()<HYROX_UNTIL) s.push({bg:"hyroxbg",dur:10000,html:`
+    <svg class="hx-logo" viewBox="0 0 520 72" xmlns="http://www.w3.org/2000/svg" fill="#fff"><path d="M0,1.784 L11.784,1.784 L11.784,30.951 L40.264,30.951 L40.264,1.784 L52.049,1.784 L52.049,70.527 L40.264,70.527 L40.264,41.262 L11.784,41.262 L11.784,70.527 L0,70.527 z"/><path d="M140.324,43.325 L117.05,5.712 L117.05,1.784 L128.637,1.784 L146.313,32.227 L164.58,1.784 L175.384,1.784 L175.384,5.712 L152.108,42.833 L152.108,70.527 L140.324,70.527 z"/><path d="M265.623,34.093 C272.499,34.093 276.525,30.754 276.525,23.095 C276.525,15.434 272.499,12.096 265.623,12.096 L250.009,12.096 L250.009,34.093 z M238.224,1.784 L267.784,1.784 C281.337,1.784 288.505,9.739 288.505,22.898 C288.505,31.834 284.577,39.298 276.427,42.736 L289.291,66.599 L289.291,70.527 L277.704,70.527 L263.561,44.11 L250.009,44.11 L250.009,70.527 L238.224,70.527 z"/><path d="M392.888,47.841 L392.888,24.469 C392.888,17.104 387.878,11.113 377.665,11.113 C367.451,11.113 362.443,17.104 362.443,24.469 L362.443,47.841 C362.443,55.207 367.451,61.198 377.665,61.198 C387.878,61.198 392.888,55.207 392.888,47.841 z M350.658,47.253 L350.658,25.058 C350.658,9.444 361.166,0.311 377.665,0.311 C394.163,0.311 404.672,9.444 404.672,25.058 L404.672,47.253 C404.672,62.868 394.163,72 377.665,72 C361.166,72 350.658,62.868 350.658,47.253"/><path d="M461.816,66.599 L483.323,34.977 L463.486,5.712 L463.486,1.784 L475.467,1.784 L490.688,25.746 L506.598,1.784 L517.891,1.784 L517.891,5.712 L497.858,34.879 L519.56,66.599 L519.56,70.527 L507.579,70.527 L490.394,44.406 L473.109,70.527 L461.816,70.527 z"/></svg>
+    <div class="eyebrow">Poznań · 20 nov · Open 30–34</div>
+    <h2 class="big">Julia Danek</h2>
+    <p class="hx-time">1:14:21</p>
+    <div class="hx-chips"><span class="pb">Nytt PB</span><span>4:a i klassen</span><span>18:e totalt</span></div>
+    <div class="hx-stats"><div><small>Löpning</small><b>38:10</b></div><div><small>Stationer</small><b>31:55</b></div><div><small>Roxzone</small><b>4:26</b></div><div><small>Snittempo</small><b>4:53<i>/km</i></b></div><div><small>Snitt löpning</small><b>4:46<i>/km</i></b></div></div>`});
   s.push(scheduleSlide());
   s.push({dur:11000,html:`
     <div class="eyebrow">Gruppträning</div>
@@ -402,7 +428,7 @@ function next(){
   if(idx===0 && els.length && els[0].classList.contains('on')===false) render();
   els.forEach((e,i)=>e.classList.toggle("on",i===idx));
   fit.classList.toggle("hero-on",!!slides[idx].bg);
-  ["hero","ptbg"].forEach(id=>document.getElementById(id).classList.toggle("on",slides[idx].bg===id));
+  ["hero","ptbg","hyroxbg"].forEach(id=>document.getElementById(id).classList.toggle("on",slides[idx].bg===id));
   [...dots.children].forEach((d,i)=>{d.classList.toggle("done",i<idx);d.classList.toggle("on",i===idx);d.style.setProperty("--dur",slides[idx].dur+"ms");
     if(i===idx){const bar=d.firstElementChild;bar.style.animation="none";void bar.offsetWidth;bar.style.animation="";}});
   els[idx].querySelectorAll("[data-fit]").forEach(fitText);
