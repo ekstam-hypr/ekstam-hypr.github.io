@@ -455,5 +455,6 @@ if(HERO_VIDEO){const v=document.getElementById("heroVid");v.src=HERO_VIDEO;if(v.
 if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fitAll);
 </script>
 
-<script>setInterval(function(){location.reload()},3*60*60*1000);</script>
+<script>/* Laddar om skylten en gång i timmen så nya ändringar kommer med. Kollar först att sidan går att nå, så TV:n inte fastnar på en felsida om nätet är nere. */
+setInterval(function(){fetch(location.href,{cache:"no-store"}).then(function(r){if(r.ok)location.reload()}).catch(function(){})},60*60*1000);</script>
 </body></html>
