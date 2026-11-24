@@ -223,6 +223,33 @@ body{margin:0;background:var(--ink);color:var(--chalk);overflow:hidden;
 .hx-stats b{font:800 54px/.9 var(--display);font-variant-numeric:tabular-nums;color:#fff}
 .hx-stats b i{font:700 19px/1 var(--label);font-style:normal;letter-spacing:.1em;color:rgba(255,255,255,.75);margin-left:3px}
 
+/* HYROX Stockholm */
+.slide.hx-st{justify-content:flex-start;padding-top:10px;padding-bottom:30px}
+.hx-st-head{display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px}
+.hx-st-logo{display:flex;flex-direction:column;align-items:center;margin-bottom:10px}
+.hx-st-logo b{font:700 150px/1 var(--body);letter-spacing:.42em;padding-left:.42em;color:#ffe600}
+.hx-st-logo span{margin-top:14px;font:500 54px/1 var(--body);letter-spacing:.62em;padding-left:.62em;color:#fff}
+.hx-heja{margin:auto 0 0;font:900 64px/.9 var(--display);text-transform:uppercase;color:#fff}
+.hx-st-head .eyebrow{padding-left:.3em}
+.hx-st .lead{color:#fff;font-size:40px;max-width:none}
+.hx-list{display:flex;flex-direction:column;border-top:2px solid rgba(255,255,255,.3)}
+.hx-row{display:grid;grid-template-columns:150px 1fr 170px;align-items:center;gap:30px;padding:26px 0;border-bottom:2px solid rgba(255,255,255,.3)}
+.hx-day{justify-self:start;display:flex;flex-direction:column;align-items:stretch}
+.hx-day b{font:900 140px/.8 var(--display);color:#ffe600;font-variant-numeric:tabular-nums}
+.hx-day .sp{display:flex;justify-content:space-between;white-space:nowrap;font:700 22px/1 var(--label);text-transform:uppercase;color:rgba(255,255,255,.85)}
+.hx-day .sp i{font-style:normal}
+.hx-day .sp.wd{margin-bottom:10px}
+.hx-day .sp.mo{margin-top:10px}
+.hx-who{min-width:0;display:flex;flex-direction:column;gap:10px}
+.hx-who b{font:900 52px/.95 var(--display);text-transform:uppercase;color:#fff;text-wrap:balance}
+.hx-who .div{align-self:flex-start;font:700 24px/1 var(--label);letter-spacing:.14em;text-transform:uppercase;padding:9px 12px 7px;border-radius:4px;background:#ffe600;color:#1e1236}
+.hx-who .slot{font:600 30px/1.2 var(--body);color:rgba(255,255,255,.85);font-variant-numeric:tabular-nums}
+.hx-qr{display:flex;flex-direction:column;align-items:center;gap:8px}
+.hx-qr i{display:flex;align-items:center;justify-content:center;width:150px;height:150px;box-sizing:border-box;background:#fff;padding:9px;border-radius:10px}
+.hx-qr i svg,.hx-qr i img{display:block;width:100%;height:100%}
+.hx-qr i.empty{background:transparent;border:3px dashed rgba(255,255,255,.5);font:700 22px/1.1 var(--label);letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);text-align:center}
+.hx-qr small{font:700 19px/1 var(--label);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.8);white-space:nowrap}
+
 [hidden]{display:none!important}
 @media (prefers-reduced-motion:reduce){
   .slide,.slide.on>*{transition:none;animation:none}
@@ -343,6 +370,16 @@ function scheduleSlide(){
 }
 
 const HYROX_UNTIL = new Date(2026,11,5); /* 5 dec 2026 */
+/* HYROX Stockholm 10–13 dec. Visas t.o.m. 13 dec. qr = SVG-kod eller bild-URL till Roxfit-länken (tom = platshållare). */
+const HX_STHLM_UNTIL = new Date(2026,11,14);
+const HX_STHLM = [
+  {day:"11", wd:"Fredag", who:"Fanny Rahm", div:"Women Doubles Open", slot:"08.00–11.00", qr:""},
+  {day:"12", wd:"Lördag", who:"Daniel Ekstam", div:"Men Singles Open", slot:"08.00–11.00", qr:""},
+  {day:"12", wd:"Lördag", who:"Maria Öberg & Julia Danek", div:"Women Doubles Pro", slot:"14.50–15.50", qr:""}
+];
+/* gör veckodag och månad exakt lika breda som datumsiffran */
+function hxFit(root){root.querySelectorAll('.hx-day').forEach(d=>{const w=d.querySelector('b').offsetWidth;if(!w)return;d.style.width=w+'px';d.querySelectorAll('.sp').forEach(sp=>{sp.style.fontSize='';sp.style.width='max-content';const n=sp.offsetWidth,f=parseFloat(getComputedStyle(sp).fontSize);sp.style.width='';if(n>w)sp.style.fontSize=(f*w/n*0.98)+'px'})})}
+function hxSpread(t,c){return `<span class="sp ${c}">${[...t].map(ch=>`<i>${esc(ch)}</i>`).join("")}</span>`}
 function buildSlides(){
   const s=[];
   s.push({bg:"hero",dur:8000,html:`
@@ -357,6 +394,15 @@ function buildSlides(){
     <p class="hx-time">1:14:21</p>
     <div class="hx-chips"><span class="pb">Nytt PB</span><span>4:a i klassen</span><span>18:e totalt</span></div>
     <div class="hx-stats"><div><small>Löpning</small><b>38:10</b></div><div><small>Stationer</small><b>31:55</b></div><div><small>Roxzone</small><b>4:26</b></div><div><small>Snittempo</small><b>4:53<i>/km</i></b></div><div><small>Snitt löpning</small><b>4:46</b></div></div>`});
+  if(new Date()<HX_STHLM_UNTIL) s.push({bg:"hyroxbg",cls:"hx-st",dur:14000,html:`
+    <div class="hx-st-head"><div class="hx-st-logo"><b>HYROX</b><span>STOCKHOLM</span></div>
+      <div class="eyebrow">10–13 december</div></div>
+    <h2 class="hx-heja">Kom och heja på oss!</h2>
+    <div class="hx-list">${HX_STHLM.map(r=>`<div class="hx-row">
+      <div class="hx-day">${hxSpread(r.wd,"wd")}<b>${esc(r.day)}</b>${hxSpread("December","mo")}</div>
+      <div class="hx-who"><b>${esc(r.who)}</b><span class="div">${esc(r.div)}</span><span class="slot">Startslot ${esc(r.slot)}</span></div>
+      <div class="hx-qr">${r.qr? `<i>${r.qr.trim().startsWith("<svg")? r.qr : `<img src="${r.qr}" alt="">`}</i>` : `<i class="empty">QR<br>kommer</i>`}<small>Följ i Roxfit</small></div>
+    </div>`).join("")}</div>`});
   s.push(scheduleSlide());
   s.push({dur:11000,html:`
     <div class="eyebrow">Gruppträning</div>
@@ -418,7 +464,7 @@ let slides=[], els=[], idx=-1, timer=null;
 const box=document.getElementById("slides"), dots=document.getElementById("dots"), sweep=document.getElementById("sweep");
 function render(){
   slides=buildSlides();
-  box.innerHTML=slides.map(s=>`<section class="slide${s.bg?" hero-slide":""}">${s.html}</section>`).join("");
+  box.innerHTML=slides.map(s=>`<section class="slide${s.bg?" hero-slide":""}${s.cls?" "+s.cls:""}">${s.html}</section>`).join("");
   els=[...box.children];
   dots.innerHTML=slides.map(()=>`<div class="dot"><i></i></div>`).join("");
 }
@@ -430,7 +476,7 @@ function next(){
   ["hero","ptbg","hyroxbg"].forEach(id=>document.getElementById(id).classList.toggle("on",slides[idx].bg===id));
   [...dots.children].forEach((d,i)=>{d.classList.toggle("done",i<idx);d.classList.toggle("on",i===idx);d.style.setProperty("--dur",slides[idx].dur+"ms");
     if(i===idx){const bar=d.firstElementChild;bar.style.animation="none";void bar.offsetWidth;bar.style.animation="";}});
-  els[idx].querySelectorAll("[data-fit]").forEach(fitText);
+  els[idx].querySelectorAll("[data-fit]").forEach(fitText); if(typeof hxFit==="function") hxFit(els[idx]);
   sweep.classList.remove("go"); void sweep.offsetWidth; sweep.classList.add("go");
   clearTimeout(timer); timer=setTimeout(next,slides[idx].dur);
 }
