@@ -27,7 +27,7 @@
 }
 html,body{height:100%}
 body{margin:0;background:var(--ink);color:var(--chalk);overflow:hidden;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-top:0;padding-bottom:0;
+  padding:0;background:#d8ccfb;
   -webkit-font-smoothing:antialiased;font-synthesis:none}
 .fit{position:absolute;left:50%;top:50%;width:1080px;height:1920px;transform-origin:center center;transform:translate(-50%,-50%)}
 .stage{position:absolute;top:0;right:0;bottom:0;left:0;overflow:hidden;background:
@@ -440,8 +440,13 @@ function classSlide(c){
 /* --- skalning --- */
 const fit=document.getElementById("fit");
 function layout(){
-  const vw=Math.max(1,innerWidth-32), vh=Math.max(1,innerHeight);
-  fit.style.transform=`translate(-50%,-50%) scale(${Math.min(vw/1080,vh/1920)})`;
+  /* Fyll hela skärmen: bredden styr skalan och scenens höjd följer skärmen,
+     så det blir ingen kant oavsett TV:ns exakta format. */
+  const vw=Math.max(1,innerWidth), vh=Math.max(1,innerHeight);
+  let sc=vw/1080, h=vh/sc;
+  if(h<1700){ h=1700; sc=vh/1700; }
+  fit.style.height=h+"px";
+  fit.style.transform=`translate(-50%,-50%) scale(${sc})`;
   fitAll();
 }
 function fitText(el){
