@@ -250,6 +250,29 @@ body{margin:0;background:var(--ink);color:var(--chalk);overflow:hidden;
 .hx-qr i.empty{background:transparent;border:3px dashed rgba(255,255,255,.5);font:700 22px/1.1 var(--label);letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);text-align:center}
 .hx-qr small{font:700 19px/1 var(--label);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.8);white-space:nowrap}
 
+/* Jul: mörklila natt med guldglitter och snö */
+.xm-bg{background:radial-gradient(900px 700px at 50% 18%,#4a3a8c 0%,transparent 70%),radial-gradient(700px 600px at 90% 85%,rgba(214,120,230,.28),transparent 70%),linear-gradient(175deg,#2a1d55 0%,#1e1236 55%,#140b28 100%)}
+.xm-bg canvas{position:absolute;top:0;left:0;width:100%;height:100%;display:block}
+.slide.xm{justify-content:flex-start;padding-top:0;padding-bottom:20px;gap:28px;color:#fff}
+.xm .eyebrow{color:#f3d27a;display:flex;align-items:center;gap:18px}
+.xm .eyebrow svg{width:40px;height:40px;flex:none}
+.xm-title{margin:-14px 0 -6px;padding-top:14px;font:900 124px/1 var(--display);text-transform:uppercase;color:#f3d27a;text-wrap:balance}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .xm-title{background:linear-gradient(100deg,#b8862c 0%,#f3d27a 22%,#fff6d8 30%,#f3d27a 38%,#c9963a 55%,#f7dc8c 72%,#fff6d8 78%,#d9a845 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:gold 5s linear infinite}
+}
+@keyframes gold{from{background-position:100% 0}to{background-position:-150% 0}}
+.xm-lead{margin:0;font:500 38px/1.25 var(--body);color:rgba(255,255,255,.88)}
+.xm-list{display:flex;flex-direction:column;gap:14px}
+.xm-row{display:grid;grid-template-columns:130px 1fr auto;align-items:center;gap:28px;padding:18px 28px;border-radius:12px;background:rgba(255,255,255,.07);border:2px solid rgba(243,210,122,.35);box-shadow:0 0 30px rgba(243,210,122,.08) inset}
+.xm-day{display:flex;flex-direction:column;align-items:center;gap:4px}
+.xm-day small{font:700 20px/1 var(--label);letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.8)}
+.xm-day b{font:900 84px/.82 var(--display);color:#f3d27a;font-variant-numeric:tabular-nums}
+.xm-who{min-width:0;display:flex;flex-direction:column;gap:6px}
+.xm-who b{font:900 52px/.92 var(--display);text-transform:uppercase;color:#fff;white-space:nowrap}
+.xm-who span{font:600 28px/1.2 var(--body);color:rgba(255,255,255,.78);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.xm-time{font:800 58px/.9 var(--display);color:#fff;font-variant-numeric:tabular-nums}
+.xm-foot{margin-top:auto;font:700 30px/1 var(--label);letter-spacing:.16em;text-transform:uppercase;color:#f3d27a}
+
 [hidden]{display:none!important}
 @media (prefers-reduced-motion:reduce){
   .slide,.slide.on>*{transition:none;animation:none}
@@ -263,6 +286,7 @@ body{margin:0;background:var(--ink);color:var(--chalk);overflow:hidden;
     <div class="hero" id="hero"><video id="heroVid" muted loop playsinline autoplay preload="auto"></video><div class="shade"></div></div>
     <div class="hero photo-bg" id="ptbg"><img id="ptImg" alt=""><div class="shade"></div></div>
     <div class="hero photo-bg hx-bg" id="hyroxbg"><img src="https://hyrox.com/wp-content/uploads/2022/06/Two-Women-running-at-the-HYROX-race.jpg" alt="" onerror="this.remove()"><div class="shade"></div></div>
+    <div class="hero xm-bg" id="xmasbg"><canvas id="xmCanvas"></canvas></div>
     <div class="sweep" id="sweep"></div>
 
     <div class="top">
@@ -381,6 +405,18 @@ const HX_STHLM = [
 /* gör veckodag och månad exakt lika breda som datumsiffran */
 function hxFit(root){root.querySelectorAll('.hx-day').forEach(d=>{const w=d.querySelector('b').offsetWidth;if(!w)return;d.style.width=w+'px';d.querySelectorAll('.sp').forEach(sp=>{sp.style.fontSize='';sp.style.width='max-content';const n=sp.offsetWidth,f=parseFloat(getComputedStyle(sp).fontSize);sp.style.width='';if(n>w)sp.style.fontSize=(f*w/n*0.98)+'px'})})}
 function hxSpread(t,c){return `<span class="sp ${c}">${[...t].map(ch=>`<i>${esc(ch)}</i>`).join("")}</span>`}
+/* Julträning. Byt dagar/tider här när de är spikade.
+   XMAS_LIVE=false: sliden syns bara med ?jul i adressen (förhandsvisning). true: syns på TV:n t.o.m. XMAS_UNTIL. */
+const XMAS_LIVE = false;
+const XMAS_UNTIL = new Date(2027,0,3); /* 3 jan 2027 */
+const XMAS_SHOW = (XMAS_LIVE || /[?&]jul\b/.test(location.search)) && new Date()<XMAS_UNTIL;
+const XMAS = [
+  {wd:"Ons", day:"23", mo:"dec", name:"Burn", text:"Svettas innan julbordet", time:"09:00"},
+  {wd:"Lör", day:"26", mo:"dec", name:"Pump", text:"Annandag, bygg styrka", time:"10:00"},
+  {wd:"Mån", day:"28", mo:"dec", name:"Hyprox", text:"Mellandagspuls", time:"09:00"},
+  {wd:"Ons", day:"30", mo:"dec", name:"X-Press", text:"30 min innan nyår", time:"10:00"},
+  {wd:"Lör", day:"2", mo:"jan", name:"Burn", text:"Nytt år, samma gäng", time:"10:00"}
+];
 function buildSlides(){
   const s=[];
   s.push({bg:"hero",dur:8000,html:`
@@ -404,6 +440,14 @@ function buildSlides(){
       <div class="hx-who"><b>${esc(r.who)}</b><span class="div">${esc(r.div)}</span><span class="slot">Startslot ${esc(r.slot)}</span></div>
       <div class="hx-qr">${r.qr? `<i>${r.qr.trim().startsWith("<svg")? r.qr : `<img src="${r.qr}" alt="">`}</i>` : `<i class="empty">QR<br>kommer</i>`}<small>Följ i Roxfit</small></div>
     </div>`).join("")}</div>`});
+  if(XMAS_SHOW) s.push({bg:"xmasbg",cls:"xm",dur:13000,html:`
+    <div class="eyebrow"><svg viewBox="0 0 24 24" fill="#f3d27a"><path d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"/></svg>Julträning på HYPR</div>
+    <h2 class="xm-title">Det är väl klart du ska träna i jul?</h2>
+    <div class="xm-list">${XMAS.map(r=>`<div class="xm-row">
+      <div class="xm-day"><small>${esc(r.wd)}</small><b>${esc(r.day)}</b><small>${esc(r.mo)}</small></div>
+      <div class="xm-who"><b>${esc(r.name)}</b><span>${esc(r.text)}</span></div>
+      <div class="xm-time">${esc(r.time)}</div></div>`).join("")}</div>
+    <div class="xm-foot">Boka i Wondr-appen</div>`});
   s.push(scheduleSlide());
   s.push({dur:11000,html:`
     <div class="eyebrow">Gruppträning</div>
@@ -479,7 +523,8 @@ function next(){
   if(idx===0 && els.length && els[0].classList.contains('on')===false) render();
   els.forEach((e,i)=>e.classList.toggle("on",i===idx));
   fit.classList.toggle("hero-on",!!slides[idx].bg);
-  ["hero","ptbg","hyroxbg"].forEach(id=>document.getElementById(id).classList.toggle("on",slides[idx].bg===id));
+  ["hero","ptbg","hyroxbg","xmasbg"].forEach(id=>document.getElementById(id).classList.toggle("on",slides[idx].bg===id));
+  xmRun(slides[idx].bg==="xmasbg");
   [...dots.children].forEach((d,i)=>{d.classList.toggle("done",i<idx);d.classList.toggle("on",i===idx);d.style.setProperty("--dur",slides[idx].dur+"ms");
     if(i===idx){const bar=d.firstElementChild;bar.style.animation="none";void bar.offsetWidth;bar.style.animation="";}});
   els[idx].querySelectorAll("[data-fit]").forEach(fitText); if(typeof hxFit==="function") hxFit(els[idx]);
@@ -489,6 +534,33 @@ function next(){
 /* klicka på en stapel för att hoppa till den bilden */
 function goTo(i){ if(i===idx) return; idx=i-1; if(idx<0) idx=slides.length-1; next(); }
 dots.addEventListener("click",e=>{const r=dots.getBoundingClientRect(),n=dots.children.length;if(!n)return;goTo(Math.max(0,Math.min(n-1,Math.floor((e.clientX-r.left)/r.width*n))));});
+
+
+/* --- glitter och snö på julbilden (körs bara när den syns) --- */
+const xmC=document.getElementById("xmCanvas"), xmX=xmC.getContext("2d");
+let xmOn=false, xmP=[], xmRaf=0;
+function xmInit(){
+  xmC.width=xmC.offsetWidth||1080; xmC.height=xmC.offsetHeight||1920;
+  const W=xmC.width,H=xmC.height,R=Math.random; xmP=[];
+  for(let i=0;i<140;i++) xmP.push({k:"g",x:R()*W,y:R()*H,r:1+R()*2.6,ph:R()*6.3,sp:.6+R()*2,vy:.15+R()*.35,gold:R()<.75});
+  for(let i=0;i<18;i++) xmP.push({k:"s",x:R()*W,y:R()*H,r:10+R()*16,ph:R()*6.3,sp:.5+R()*1.2,vy:.1+R()*.2});
+  for(let i=0;i<70;i++) xmP.push({k:"f",x:R()*W,y:R()*H,r:2+R()*3.5,ph:R()*6.3,sp:.4+R()*.8,vy:.6+R()*1.4});
+}
+function xmStar(x,y,r,a){xmX.globalAlpha=a;xmX.beginPath();xmX.moveTo(x,y-r);xmX.quadraticCurveTo(x,y,x+r,y);xmX.quadraticCurveTo(x,y,x,y+r);xmX.quadraticCurveTo(x,y,x-r,y);xmX.quadraticCurveTo(x,y,x,y-r);xmX.fill()}
+function xmFrame(t){
+  if(!xmOn) return;
+  const W=xmC.width,H=xmC.height,s=t/1000; xmX.clearRect(0,0,W,H);
+  for(const p of xmP){
+    const tw=.5+.5*Math.sin(s*p.sp*2+p.ph);
+    p.y+=p.vy; if(p.k==="f") p.x+=Math.sin(s*p.sp+p.ph)*.6;
+    if(p.y>H+20){p.y=-20;p.x=Math.random()*W}
+    if(p.k==="g"){xmX.fillStyle=p.gold?"#f3d27a":"#fff";xmX.globalAlpha=.25+.75*tw;xmX.beginPath();xmX.arc(p.x,p.y,p.r,0,6.3);xmX.fill()}
+    else if(p.k==="s"){xmX.fillStyle="#fff3c4";xmStar(p.x,p.y,p.r*(.4+.6*tw),.15+.85*tw*tw)}
+    else{xmX.fillStyle="#fff";xmX.globalAlpha=.55;xmX.beginPath();xmX.arc(p.x,p.y,p.r,0,6.3);xmX.fill()}
+  }
+  xmX.globalAlpha=1; xmRaf=requestAnimationFrame(xmFrame);
+}
+function xmRun(on){ if(on===xmOn) return; xmOn=on; cancelAnimationFrame(xmRaf); if(on){ if(!xmP.length||xmC.width!==xmC.offsetWidth) xmInit(); xmRaf=requestAnimationFrame(xmFrame);} else xmX.clearRect(0,0,xmC.width,xmC.height); }
 
 /* --- QR --- */
 document.getElementById("qrMedlem").innerHTML=QR.medlem;
